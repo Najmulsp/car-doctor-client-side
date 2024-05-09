@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import banner from "../../public/assets/images/checkout/checkout.png";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Orders = () => {
   const { user } = useContext(AuthContext);
@@ -12,11 +13,16 @@ const Orders = () => {
   const url = `http://localhost:5000/orders?email=${user?.email}`;
 
   useEffect(() => {
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => {
-        setOrders(data);
-      });
+    axios.get(url, {withCredentials: true})
+    .then(res =>{
+      setOrders(res.data)
+
+    })
+    // fetch(url)
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     setOrders(data);
+    //   });
   }, [url]);
 
 
@@ -51,33 +57,33 @@ const Orders = () => {
       }
     });
       // aprove order
-    const confirmedOrder = id => {
-      fetch(`http://localhost:5000/orders/${id}`, {
-          method: 'PUT',
-          headers:{'content-type' : 'application/json'},
-          body:JSON.stringify({status: "confirm"})
-      })
-      .then(res => res.json())
-      .then(data => {
-          console.log(data)
-          if(data.modifiedCount > 0){
-              Swal.fire({
-                  title: 'success!',
-                  text: 'Your order updated successfully',
-                  icon: 'success',
-                  confirmButtonText: 'Cool'
-                })
+  //   const confirmedOrder = id => {
+  //     fetch(`http://localhost:5000/orders/${id}`, {
+  //         method: 'PUT',
+  //         headers:{'content-type' : 'application/json'},
+  //         body:JSON.stringify({status: "confirm"})
+  //     })
+  //     .then(res => res.json())
+  //     .then(data => {
+  //         console.log(data)
+  //         if(data.modifiedCount > 0){
+  //             Swal.fire({
+  //                 title: 'success!',
+  //                 text: 'Your order updated successfully',
+  //                 icon: 'success',
+  //                 confirmButtonText: 'Cool'
+  //               })
 
-                const remaining = orders.filter(order => order._id !== id);
-                const updated = orders.find(order => order._id === id);
-                updated.status = "confirm";
-                const newOrders = [updated, ...remaining]
-                setOrders(newOrders)
+  //               const remaining = orders.filter(order => order._id !== id);
+  //               const updated = orders.find(order => order._id === id);
+  //               updated.status = "confirm";
+  //               const newOrders = [updated, ...remaining]
+  //               setOrders(newOrders)
 
-          }
+  //         }
           
-      })
-  }
+  //     })
+  // }
 }
   return (
     <div className="container mx-auto mt-10">

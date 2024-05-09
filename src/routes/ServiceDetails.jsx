@@ -5,7 +5,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 
 const ServiceDetails = () => {
   const service = useLoaderData();
-  console.log(service);
+  // console.log(service);
   return (
     <div className="container mx-auto mt-10 h-content">
       <div className="relative w-full h-64 rounded-lg bg-gradient-to-r from-slate-950 to-gray-950 border">

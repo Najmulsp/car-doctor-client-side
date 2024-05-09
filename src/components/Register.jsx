@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import Swal from "sweetalert2";
 import { FaFacebook } from "react-icons/fa";
+import axios from "axios";
 
 const Register = () => {
   const {
@@ -13,14 +14,16 @@ const Register = () => {
     handleFacebookLogin,
   } = useContext(AuthContext);
 
-  const handleRegister = (e) => {
+  const handleRegister = async(e) => {
     e.preventDefault();
     const name = e.target.name.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     console.log(name, email, password);
 
-    createUser(email, password)
+    const result = await createUser(email, password)
+    const {data} = await axios.post(`http://localhost:5000/jwt`, {email : result?.user?.email}, {withCredentials: true})
+    console.log(data)
       .then((result) => {
         const user = result.user;
         console.log(user);
@@ -36,8 +39,10 @@ const Register = () => {
   };
 
   // google log in
-  const googleLogin = () => {
-    handleGoogleLogin();
+  const googleLogin = async() => {
+    const result = await handleGoogleLogin();
+    const {data} = await axios.post(`http://localhost:5000/jwt`, {email : result?.user?.email}, {withCredentials: true})
+    console.log(data)
     Swal.fire({
       position: "top-end",
       icon: "success",
@@ -48,8 +53,10 @@ const Register = () => {
   };
 
   // github log in
-  const githubLogin = () => {
-    handleGithubLogin();
+  const githubLogin = async() => {
+    const result = await handleGithubLogin();
+    const {data} = await axios.post(`http://localhost:5000/jwt`, {email : result?.user?.email}, {withCredentials: true})
+    console.log(data)
     Swal.fire({
       position: "top-end",
       icon: "success",
@@ -59,8 +66,10 @@ const Register = () => {
     });
   };
   // facebook log in
-  const facebookLogin = () => {
-    handleFacebookLogin();
+  const facebookLogin = async() => {
+    const result = await handleFacebookLogin();
+    const {data} = await axios.post(`http://localhost:5000/jwt`, {email : result?.user?.email}, {withCredentials: true})
+    console.log(data)
     Swal.fire({
       position: "top-end",
       icon: "success",

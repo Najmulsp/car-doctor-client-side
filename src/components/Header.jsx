@@ -3,11 +3,14 @@ import logo from "../../public/assets/images/logo.svg";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../providers/AuthProvider";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Header = () => {
   const { user, logout } = useContext(AuthContext);
 
-  const handleLogout = () => {
+  const handleLogout = async() => {
+    const {data} = await axios.post(`http://localhost:5000/logout`, user,{withCredentials: true});
+    console.log(data)
     logout();
     Swal.fire({
       position: "top-end",
